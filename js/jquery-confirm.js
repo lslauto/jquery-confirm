@@ -203,8 +203,12 @@
             /**
              * contentParsed maintains the contents for $content, before it is put in DOM
              */
-            this.contentParsed = $(document.createElement('div'));
 
+            this.contentParsed = $(document.createElement('div'));
+            if(this.boxContentFull) {
+               this.contentParsed.css('height','100%');
+            }
+            
             if(!this.lazyOpen){
                 setTimeout(function(){
                     that.open();
@@ -242,9 +246,9 @@
                 else
                     template.find('.jc-bs3-container').addClass(this.bootstrapClasses.container);
             }else{
+                template.find('.jconfirm-box').css('height', ($(window).height()*this.boxHeight));
                 template.find('.jconfirm-box').css('width', this.boxWidth);
             }
-
             if(this.titleClass)
                 template.find('.jconfirm-title-c').addClass(this.titleClass);
 
@@ -252,6 +256,9 @@
             var ariaLabel = 'jconfirm-box' + this._id;
             template.find('.jconfirm-box').attr('aria-labelledby', ariaLabel).attr('tabindex', -1);
             template.find('.jconfirm-content').attr('id', ariaLabel);
+            if(this.boxContentFull) {
+               template.find('.jconfirm-content').css('height', '100%');
+            }
             if(this.bgOpacity !== null)
                 template.find('.jconfirm-bg').css('opacity', this.bgOpacity);
             if(this.rtl)
@@ -416,7 +423,7 @@
         _updateContentMaxHeight: function(){
             var height = $(window).height() - (this.$jconfirmBox.outerHeight() - this.$contentPane.outerHeight()) - (this.offsetTop + this.offsetBottom);
             this.$contentPane.css({
-                'max-height': height + 'px'
+                'height': height+'px'
             });
         },
         setBoxWidth: function(width){
@@ -1313,7 +1320,9 @@
         closeIconClass: false,
         watchInterval: 100,
         columnClass: 'col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',
+        boxHeight: '0.50',
         boxWidth: '50%',
+        boxContentFull: false,
         scrollToPreviousElement: true,
         scrollToPreviousElementAnimate: true,
         useBootstrap: true,
